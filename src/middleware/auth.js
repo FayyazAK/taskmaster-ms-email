@@ -42,9 +42,7 @@ const validateRequest = (req, res, next) => {
     return res.error(MSG.FORBIDDEN, STATUS.FORBIDDEN);
   }
 
-  logger.debug(
-    `Request validated for user ${req.user.user_id} with role ${req.user.role}`
-  );
+  logger.info(`Request validated for email`);
 
   next();
 };
