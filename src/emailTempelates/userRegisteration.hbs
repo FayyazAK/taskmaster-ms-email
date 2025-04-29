@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Verify Your Email</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f2f2f2;">
+  <!-- Preheader text: shows in inbox preview, but hidden in body -->
+  <span style="display:none;font-size:1px;color:#f2f2f2;max-height:0;max-width:0;opacity:0;overflow:hidden;">
+    Complete your TaskMaster registration by verifying your email address.
+  </span>
+
+  <table role="presentation" width="100%" bgcolor="#f2f2f2" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="margin:20px auto;background-color:#ffffff;border-radius:8px;overflow:hidden;">
+          
+          <!-- Header -->
+          <tr>
+            <td style="background-color:#4A90E2;padding:24px;text-align:center;">
+              <h1 style="margin:0;font-family:Arial,sans-serif;font-size:24px;color:#ffffff;">
+                Welcome, {{name}}!
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:24px;font-family:Arial,sans-serif;color:#333333;line-height:1.5;font-size:16px;">
+              <p>
+                Thank you for registering with <strong>TaskMaster</strong>. To complete your registration, please verify your email by clicking the button below:
+              </p>
+
+              <!-- CTA Button -->
+              <p style="text-align:center;margin:32px 0;">
+                <a href="{{verifyLink}}" target="_blank" rel="noopener noreferrer"
+                   style="display:inline-block;padding:12px 24px;font-family:Arial,sans-serif;font-size:16px;
+                          color:#ffffff;text-decoration:none;border-radius:4px;
+                          background-color:#4A90E2;">
+                  Verify Your Email
+                </a>
+              </p>
+
+              <p style="font-size:14px;color:#555555;">
+                If the button above doesn’t work, copy and paste this URL into your browser:
+              </p>
+              <p style="font-size:14px;color:#555555;word-break:break-all;">
+                <a href="{{verifyLink}}" target="_blank" rel="noopener noreferrer"
+                   style="color:#4A90E2;text-decoration:none;">
+                  {{verifyLink}}
+                </a>
+              </p>
+
+              <hr style="border:none;border-top:1px solid #dddddd;margin:32px 0;">
+
+              <p style="font-size:14px;color:#999999;">
+                If you didn’t sign up for TaskMaster, just ignore this email.
+              </p>
+
+              <p style="font-size:14px;color:#999999;margin-top:24px;">
+                Cheers,<br>
+                The TaskMaster Team
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
