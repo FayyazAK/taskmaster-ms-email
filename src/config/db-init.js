@@ -1,16 +1,14 @@
-const { redisClient } = require("../config/redis");
-const Email = require("../models/Email");
-const { pool } = require("./database");
+const { sequelize } = require("./database");
+const logger = require("../utils/logger");
 
 async function initializeDatabase() {
   try {
-    await Email.createTable();
+    // Create tables
+    await sequelize.sync({ alter: true });
 
-    // Test Redis connection
-    await redisClient.ping();
-    console.log("Redis connection successful!");
+    logger.info("Database initialization completed successfully");
   } catch (error) {
-    console.error("Error initializing database:", error);
+    logger.error("Error initializing database:", error);
     throw error;
   }
 }
