@@ -2,6 +2,7 @@ const winston = require("winston");
 const { format } = winston;
 const DailyRotateFile = require("winston-daily-rotate-file");
 const path = require("path");
+const config = require("../config/env");
 
 // Define log format
 const logFormat = format.combine(
@@ -13,9 +14,9 @@ const logFormat = format.combine(
 
 // Create a logger instance
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || "info",
+  level: config.log.level,
   format: logFormat,
-  defaultMeta: { service: "todo-list-api" },
+  defaultMeta: { service: config.log.service },
   transports: [
     // Console transport
     new winston.transports.Console({
@@ -28,17 +29,17 @@ const logger = winston.createLogger({
     }),
     // File transport for all logs
     new DailyRotateFile({
-      filename: path.join(__dirname, "../logs/combined-%DATE%.log"),
-      datePattern: "YYYY-MM-DD",
-      maxSize: "20m",
-      maxFiles: "14d",
+      filename: path.join(__dirname, config.log.dir, "combined-%DATE%.log"),
+      datePattern: config.log.datePattern,
+      maxSize: config.log.maxSize,
+      maxFiles: config.log.maxFiles,
     }),
     // File transport for error logs
     new DailyRotateFile({
-      filename: path.join(__dirname, "../logs/error-%DATE%.log"),
-      datePattern: "YYYY-MM-DD",
-      maxSize: "20m",
-      maxFiles: "14d",
+      filename: path.join(__dirname, config.log.dir, "error-%DATE%.log"),
+      datePattern: config.log.datePattern,
+      maxSize: config.log.maxSize,
+      maxFiles: config.log.maxFiles,
       level: "error",
     }),
   ],

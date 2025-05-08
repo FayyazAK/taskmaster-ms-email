@@ -17,10 +17,10 @@ async function startServer() {
     // Create server based on SSL configuration
     const server = createServers(app);
 
-    if (config.SSL.enabled) {
-      logger.info(`Email service running on HTTPS port ${config.SSL.port}`);
+    if (config.ssl.enabled) {
+      logger.info(`Email service running on HTTPS port ${config.ssl.port}`);
     } else {
-      logger.info(`Email service running on HTTP port ${config.PORT}`);
+      logger.info(`Email service running on HTTP port ${config.server.port}`);
     }
   } catch (error) {
     logger.error("Failed to start Email service:", error);

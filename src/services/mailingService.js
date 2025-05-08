@@ -9,11 +9,11 @@ const logger = require("../utils/logger");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: config.GMAIL_USER,
-    pass: config.GMAIL_APP_PASSWORD, // Remove spaces and trim any extra characters
+    user: config.email.user,
+    pass: config.email.appPassword, // Remove spaces and trim any extra characters
   },
   tls: {
-    rejectUnauthorized: config.NODE_ENV === "development" ? false : true,
+    rejectUnauthorized: config.email.tlsRejectUnauthorized,
   },
 });
 
@@ -38,14 +38,12 @@ const sendEmail = async ({
 }) => {
   try {
     let finalHtml = html;
-    logger.info("config.GMAIL_APP_PASSWORD");
-    logger.info(config.GMAIL_APP_PASSWORD.trim().replace(/\s+/g, ""));
     if (template) {
       finalHtml = compileTemplate(template, templateData);
     }
 
     const mailOptions = {
-      from: config.GMAIL_USER,
+      from: config.email.user,
       to,
       subject,
       text: text || "Please view this email in an HTML-enabled email client.",

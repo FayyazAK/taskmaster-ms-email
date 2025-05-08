@@ -32,7 +32,7 @@ const validateRequest = (req, res, next) => {
 
   // Verify request signature
   const expectedSignature = crypto
-    .createHmac("sha256", config.API_GATEWAY_SIGNATURE)
+    .createHmac("sha256", config.gateway.signature)
     .update(`${timestamp}${req.originalUrl}`)
     .digest("hex");
 

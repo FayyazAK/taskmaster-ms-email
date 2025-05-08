@@ -1,10 +1,10 @@
 const config = require("./env");
 
 const corsConfig = {
-  origin: config.CORS.ALLOWED_ORIGINS,
+  origin: config.cors.allowedOrigins,
   credentials: true,
-  methods: config.CORS.ALLOWED_METHODS,
-  allowedHeaders: config.CORS.ALLOWED_HEADERS,
+  methods: config.cors.allowedMethods,
+  allowedHeaders: config.cors.allowedHeaders,
 };
 
 module.exports = corsConfig;
