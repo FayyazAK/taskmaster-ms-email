@@ -1,6 +1,6 @@
 const app = require("./src/app");
 const config = require("./src/config/env");
-const db = require("./src/config/database");
+const { sequelize } = require("./src/config/database");
 const initializeDatabase = require("./src/config/db-init");
 const createServers = require("./src/config/server");
 const logger = require("./src/utils/logger");
@@ -8,7 +8,7 @@ const logger = require("./src/utils/logger");
 async function startServer() {
   try {
     // Test database connection
-    await db.testConnection();
+    await sequelize.authenticate();
     logger.info("Connected to Email database!");
 
     // Initialize database
