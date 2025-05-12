@@ -1,54 +1,72 @@
-require("dotenv").config();
+const path = require("path");
+const dotenv = require("dotenv");
+const validateEnv = require("./validateEnv");
+
+dotenv.config({
+  path: path.resolve(
+    process.cwd(),
+    `.env.${process.env.NODE_ENV || "development"}`
+  ),
+});
+
+// Validate and sanitize environment variables
+const env = validateEnv(process.env);
 
 module.exports = {
-  // NODE ENV
-  NODE_ENV: process.env.NODE_ENV || "development",
+  nodeEnv: env.NODE_ENV,
 
-  // SERVER CONFIG
-  PORT: process.env.PORT || 3002,
-
-  // GATEWAY CONFIG
-  API_GATEWAY_SIGNATURE:
-    process.env.API_GATEWAY_SIGNATURE || "taskmaster@gateway",
-
-  // CORS CONFIG
-  CORS: {
-    ALLOWED_ORIGINS: process.env.CORS_ALLOWED_ORIGINS
-      ? process.env.CORS_ALLOWED_ORIGINS.split(",")
-      : ["http://localhost:3000"],
-    ALLOWED_METHODS: process.env.CORS_ALLOWED_METHODS
-      ? process.env.CORS_ALLOWED_METHODS.split(",")
-      : ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    ALLOWED_HEADERS: process.env.CORS_ALLOWED_HEADERS
-      ? process.env.CORS_ALLOWED_HEADERS.split(",")
-      : ["Content-Type", "Authorization"],
-  },
-  // SSL CONFIG
-  SSL: {
-    enabled: process.env.SSL_ENABLED === "true",
-    key: process.env.SSL_KEY_PATH || "ssl/key.pem",
-    cert: process.env.SSL_CERT_PATH || "ssl/cert.pem",
-    port: process.env.SSL_PORT || 3443,
+  server: {
+    port: env.PORT,
   },
 
-  // DATABASE CONFIG
-  DB_HOST: process.env.DB_HOST || "localhost",
-  DB_USER: process.env.DB_USER || "root",
-  DB_PASSWORD: process.env.DB_PASSWORD || "",
-  DB_NAME: process.env.EMAIL_DB_NAME || "taskmaster-email-db",
-
-  // REDIS CONFIG
-  REDIS: {
-    HOST: process.env.REDIS_HOST || "localhost",
-    PORT: process.env.REDIS_PORT || 6379,
-    TTL: process.env.REDIS_TTL || 3600,
-    PASSWORD: process.env.REDIS_PASSWORD || "",
-    DB: process.env.REDIS_DB || 0,
+  gateway: {
+    signature: env.API_GATEWAY_SIGNATURE,
+    systemToken: env.SYSTEM_TOKEN,
+    url: env.GATEWAY_URL,
   },
 
-  CLEAR_CACHE_ON_START: process.env.CLEAR_CACHE_ON_START === "true",
+  cors: {
+    allowedOrigins: env.CORS_ALLOWED_ORIGINS.split(","),
+    allowedMethods: env.CORS_ALLOWED_METHODS.split(","),
+    allowedHeaders: env.CORS_ALLOWED_HEADERS.split(","),
+  },
+
+  ssl: {
+    enabled: env.SSL_ENABLED,
+    keyPath: env.SSL_KEY_PATH,
+    certPath: env.SSL_CERT_PATH,
+    port: env.SSL_PORT,
+  },
+
+  db: {
+    host: env.DB_HOST,
+    user: env.DB_USER,
+    password: env.DB_PASSWORD,
+    name: env.AUTH_DB_NAME,
+  },
+
+  redis: {
+    host: env.REDIS_HOST,
+    port: env.REDIS_PORT,
+    ttl: env.REDIS_TTL,
+    password: env.REDIS_PASSWORD,
+    db: env.REDIS_DB,
+    clearOnStart: env.CLEAR_CACHE_ON_START,
+  },
+
+  log: {
+    level: env.LOG_LEVEL,
+    dir: env.LOG_DIR,
+    datePattern: env.LOG_DATE_PATTERN,
+    maxSize: env.LOG_MAX_SIZE,
+    maxFiles: env.LOG_MAX_FILES,
+    service: env.LOG_SERVICE_NAME,
+  },
 
   // EMAIL CONFIG
-  GMAIL_USER: process.env.GMAIL_USER,
-  GMAIL_APP_PASSWORD: process.env.GMAIL_APP_PASSWORD,
+  email: {
+    user: env.GMAIL_USER,
+    appPassword: env.GMAIL_APP_PASSWORD,
+    tlsRejectUnauthorized: env.EMAIL_TLS_REJECT_UNAUTHORIZED,
+  },
 };

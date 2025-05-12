@@ -6,16 +6,16 @@ const config = require("./env");
 const logger = require("../utils/logger");
 
 function createServers(app) {
-  if (config.SSL.enabled) {
+  if (config.ssl.enabled) {
     try {
       const httpsOptions = {
-        key: fs.readFileSync(path.join(__dirname, "..", config.SSL.key)),
-        cert: fs.readFileSync(path.join(__dirname, "..", config.SSL.cert)),
+        key: fs.readFileSync(path.join(__dirname, "..", config.ssl.key)),
+        cert: fs.readFileSync(path.join(__dirname, "..", config.ssl.cert)),
       };
 
       const server = https.createServer(httpsOptions, app);
-      server.listen(config.SSL.port);
-      logger.info(`HTTPS server running on port ${config.SSL.port}`);
+      server.listen(config.ssl.port);
+      logger.info(`HTTPS server running on port ${config.ssl.port}`);
       return server;
     } catch (error) {
       logger.error(`Failed to start HTTPS server: ${error.message}`);
@@ -23,8 +23,8 @@ function createServers(app) {
     }
   } else {
     const server = http.createServer(app);
-    server.listen(config.PORT);
-    logger.info(`HTTP server running on port ${config.PORT}`);
+    server.listen(config.server.port);
+    logger.info(`HTTP server running on port ${config.server.port}`);
     return server;
   }
 }

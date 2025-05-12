@@ -33,7 +33,7 @@ class Email {
     try {
       const email = await EMAIL.findByPk(id);
       if (!email) {
-        throw new Error("Email not found");
+        return false;
       }
 
       email.status = status;
@@ -62,7 +62,7 @@ class Email {
     try {
       const email = await EMAIL.findByPk(id);
       if (!email) {
-        throw new Error("Email not found");
+        return false;
       }
       return email;
     } catch (error) {

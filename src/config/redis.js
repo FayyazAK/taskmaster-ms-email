@@ -3,10 +3,10 @@ const Redis = require("ioredis");
 const config = require("./env");
 
 const redisClient = new Redis({
-  host: config.REDIS.HOST || "localhost",
-  port: config.REDIS.PORT || 6379,
-  password: config.REDIS.PASSWORD || "",
-  db: config.REDIS.DB || 0,
+  host: config.redis.host || "localhost",
+  port: config.redis.port || 6379,
+  password: config.redis.password || "",
+  db: config.redis.db || 0,
   keyPrefix: "emailService:",
   // Reconnect strategy
   retryStrategy(times) {
@@ -37,7 +37,7 @@ const cacheHelpers = {
 
   async set(key, data) {
     try {
-      await redisClient.set(key, JSON.stringify(data), "EX", config.REDIS.TTL);
+      await redisClient.set(key, JSON.stringify(data), "EX", config.redis.ttl);
     } catch (error) {
       console.error(`Cache set error for key ${key}:`, error);
     }
