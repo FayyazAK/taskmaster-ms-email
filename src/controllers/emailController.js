@@ -77,7 +77,11 @@ const sendEmail = async (req, res) => {
     opts.attempts = 5;
     opts.backoff = { type: "exponential", delay: 60_000 };
 
-    const job = await emailQueue.add("sendEmail", jobData, opts);
+    const job = await emailQueue.add("sendEmail", jobData, {
+      ...opts,
+      removeOnComplete: true,
+      removeOnFail: true,
+    });
     logger.info(
       `Enqueued email job ${job.id} (${opts.delay ? `scheduled` : `now`})`
     );

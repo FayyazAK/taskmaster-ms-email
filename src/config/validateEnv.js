@@ -13,12 +13,17 @@ const envSchema = Joi.object({
   API_GATEWAY_SIGNATURE: Joi.string().default("taskmaster@gateway"),
   SYSTEM_TOKEN: Joi.string().default("taskmaster@system"),
   GATEWAY_URL: Joi.string().uri().default("https://localhost:4000"),
+  SYSTEM_SIGNATURE: Joi.string().default("taskmaster@system"),
 
   // MYSQL DATABASE CONNECTION
   DB_HOST: Joi.string().default("localhost"),
   DB_USER: Joi.string().default("root"),
   DB_PASSWORD: Joi.string().default("1234"),
   AUTH_DB_NAME: Joi.string().default("taskmaster-email-db"),
+  DB_PORT: Joi.number().port().default(3306),
+  // DATABASE BACKUP CONFIGURATION
+  BACKUP_DIR: Joi.string().default("./db_backups"),
+  RETENTION_DAYS: Joi.number().integer().min(1).default(7),
 
   // SSL CONFIG
   SSL_ENABLED: Joi.boolean().truthy("true").falsy("false").default(false),

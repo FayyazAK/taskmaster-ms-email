@@ -9,6 +9,11 @@ const logger = require("./utils/logger");
 const corsConfig = require("./config/cors");
 const app = express();
 
+// Initialize database backup
+logger.info("Initializing database backup service...");
+//Cron Job for database backup
+require("./services/backupDb");
+
 // Middleware
 app.use(cors(corsConfig));
 app.use(helmet());
