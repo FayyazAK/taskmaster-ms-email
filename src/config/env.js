@@ -75,4 +75,8 @@ module.exports = {
     appPassword: env.GMAIL_APP_PASSWORD,
     tlsRejectUnauthorized: env.EMAIL_TLS_REJECT_UNAUTHORIZED,
   },
+
+  kafka: {
+    brokers: env.KAFKA_BROKERS.split(","),
+  },
 };

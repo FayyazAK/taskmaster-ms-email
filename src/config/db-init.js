@@ -4,7 +4,7 @@ const logger = require("../utils/logger");
 async function initializeDatabase() {
   try {
     // Create tables
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: false, force: false });
 
     logger.info("Database initialization completed successfully");
   } catch (error) {
