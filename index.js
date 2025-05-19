@@ -4,6 +4,7 @@ const { sequelize } = require("./src/config/database");
 const initializeDatabase = require("./src/config/db-init");
 const createServers = require("./src/config/server");
 const logger = require("./src/utils/logger");
+const KafkaHandler = require("./src/services/kafkaHandler");
 
 async function startServer() {
   try {
@@ -13,6 +14,9 @@ async function startServer() {
 
     // Initialize database
     await initializeDatabase();
+
+    // Initialize Kafka handler
+    await KafkaHandler.initialize();
 
     // Create server based on SSL configuration
     const server = createServers(app);

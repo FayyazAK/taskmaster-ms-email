@@ -61,6 +61,8 @@ const envSchema = Joi.object({
   GMAIL_USER: Joi.string().email().required(),
   GMAIL_APP_PASSWORD: Joi.string().required(),
   EMAIL_TLS_REJECT_UNAUTHORIZED: Joi.boolean().default(false),
+  // Kafka
+  KAFKA_BROKERS: Joi.string().default("localhost:9092"),
 })
   .unknown() // allow other vars
   .required();
