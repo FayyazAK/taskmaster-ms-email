@@ -76,7 +76,7 @@ module.exports = {
     tlsRejectUnauthorized: env.EMAIL_TLS_REJECT_UNAUTHORIZED,
   },
 
-  kafka: {
-    brokers: env.KAFKA_BROKERS.split(","),
+  rabbitMQ: {
+    url: env.RABBITMQ_URL,
   },
 };
