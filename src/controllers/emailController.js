@@ -4,6 +4,7 @@ const MSG = require("../utils/messages");
 const emailQueue = require("../queues/emailQueue");
 const templateService = require("../services/templateService");
 const logger = require("../utils/logger");
+const mongoose = require("mongoose");
 
 const sendEmail = async (req, res) => {
   try {
@@ -59,7 +60,7 @@ const sendEmail = async (req, res) => {
 
     // build job payload
     const jobData = {
-      id,
+      id: id.toString(), // Convert MongoDB ObjectId to string
       to: recipientEmail,
       subject,
       template: templateName,

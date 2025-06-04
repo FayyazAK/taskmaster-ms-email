@@ -1,4 +1,4 @@
-const { sequelize, Op } = require("../config/database");
+const mongoose = require("mongoose");
 const EMAIL = require("../models/EmailModel");
 const logger = require("../utils/logger");
 const { cacheHelpers, keyGenerators } = require("../config/redis");
@@ -22,7 +22,7 @@ class Email {
 
       await cacheHelpers.del(keyGenerators.emails());
 
-      return email.id;
+      return email._id;
     } catch (error) {
       logger.error("Error creating email:", error);
       throw new Error(`Failed to create email: ${error.message}`);
@@ -31,17 +31,30 @@ class Email {
 
   static async updateEmailStatus(id, status) {
     try {
-      const email = await EMAIL.findByPk(id);
+      
+      // Validate ObjectId
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        logger.error(`Invalid ObjectId format: ${id}`);
+        return false;
+      }
+
+      const email = await EMAIL.findById(id);
+      
       if (!email) {
+        logger.warn(`Email with id ${id} not found`);
         return false;
       }
 
       email.status = status;
+      if (status === 'sent') {
+        email.sentAt = new Date();
+      }
+      
       await email.save();
 
       await cacheHelpers.del(keyGenerators.emails());
 
-      return email.id;
+      return email._id;
     } catch (error) {
       logger.error("Error updating email status:", error);
       throw new Error(`Failed to update email status: ${error.message}`);
@@ -50,8 +63,20 @@ class Email {
 
   static async deleteEmail(id) {
     try {
-      await EMAIL.destroy({ where: { id } });
+      // Validate ObjectId
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        logger.error(`Invalid ObjectId format: ${id}`);
+        return false;
+      }
+
+      const result = await EMAIL.findByIdAndDelete(id);
+      if (!result) {
+        logger.warn(`Email with id ${id} not found for deletion`);
+        return false;
+      }
+
       await cacheHelpers.del(keyGenerators.emails());
+      return true;
     } catch (error) {
       logger.error("Error deleting email:", error);
       throw new Error(`Failed to delete email: ${error.message}`);
@@ -60,8 +85,15 @@ class Email {
 
   static async getEmailById(id) {
     try {
-      const email = await EMAIL.findByPk(id);
+      // Validate ObjectId
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        logger.error(`Invalid ObjectId format: ${id}`);
+        return false;
+      }
+
+      const email = await EMAIL.findById(id);
       if (!email) {
+        logger.warn(`Email with id ${id} not found`);
         return false;
       }
       return email;
@@ -85,7 +117,7 @@ class Email {
         );
       }
 
-      const emails = await EMAIL.findAll({ where: { status } });
+      const emails = await EMAIL.find({ status }).sort({ createdAt: -1 });
       await cacheHelpers.set(cacheKey, emails);
       return emails;
     } catch (error) {
@@ -100,9 +132,11 @@ class Email {
       const cached = await cacheHelpers.get(cacheKey);
       if (cached) return cached;
 
-      const emails = await EMAIL.findAll({
-        where: { scheduledFor: { [Op.lte]: new Date() } },
-      });
+      const emails = await EMAIL.find({
+        scheduledFor: { $lte: new Date() },
+        status: "pending"
+      }).sort({ scheduledFor: 1 });
+
       await cacheHelpers.set(cacheKey, emails);
       return emails;
     } catch (error) {

@@ -1,62 +1,42 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/database");
+const mongoose = require("mongoose");
 
-const Email = sequelize.define(
-  "Email",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    recipientEmail: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      index: true,
-    },
-    subject: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    body: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    status: {
-      type: DataTypes.ENUM("pending", "sent", "failed"),
-      defaultValue: "pending",
-      allowNull: true,
-      index: true,
-    },
-    emailType: {
-      type: DataTypes.ENUM(
-        "registration",
-        "verification",
-        "password_reset",
-        "other"
-      ),
-      defaultValue: "other",
-      allowNull: true,
-    },
-    scheduledFor: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      index: true,
-    },
-    sentAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    errorMessage: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
+const emailSchema = new mongoose.Schema({
+  recipientEmail: {
+    type: String,
+    required: true,
+    index: true,
   },
-  {
-    timestamps: true,
-    createdAt: "createdAt",
-    updatedAt: "updatedAt",
+  subject: {
+    type: String,
+    required: true,
+  },
+  body: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["pending", "sent", "failed"],
+    default: "pending",
+    index: true,
+  },
+  emailType: {
+    type: String,
+    enum: ["registration", "verification", "password_reset", "other"],
+    default: "other",
+  },
+  scheduledFor: {
+    type: Date,
+    index: true,
+  },
+  sentAt: {
+    type: Date,
+  },
+  errorMessage: {
+    type: String,
   }
-);
+}, {
+  timestamps: true
+});
 
-module.exports = Email;
+module.exports = mongoose.model("Email", emailSchema);

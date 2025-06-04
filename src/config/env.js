@@ -39,11 +39,8 @@ module.exports = {
   },
 
   db: {
-    host: env.DB_HOST,
-    user: env.DB_USER,
-    password: env.DB_PASSWORD,
-    name: env.AUTH_DB_NAME,
-    port: env.DB_PORT,
+    uri: env.MONGODB_URI,
+    name: env.MONGODB_DB_NAME,
   },
 
   backup: {

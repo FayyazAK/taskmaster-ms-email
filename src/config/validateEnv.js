@@ -15,12 +15,10 @@ const envSchema = Joi.object({
   GATEWAY_URL: Joi.string().uri().default("https://localhost:4000"),
   SYSTEM_SIGNATURE: Joi.string().default("taskmaster@system"),
 
-  // MYSQL DATABASE CONNECTION
-  DB_HOST: Joi.string().default("localhost"),
-  DB_USER: Joi.string().default("root"),
-  DB_PASSWORD: Joi.string().default("1234"),
-  AUTH_DB_NAME: Joi.string().default("taskmaster-email-db"),
-  DB_PORT: Joi.number().port().default(3306),
+  // MONGODB CONNECTION
+  MONGODB_URI: Joi.string().default("mongodb://localhost:27017"),
+  MONGODB_DB_NAME: Joi.string().default("taskmaster-email-db"),
+
   // DATABASE BACKUP CONFIGURATION
   BACKUP_DIR: Joi.string().default("./db_backups"),
   RETENTION_DAYS: Joi.number().integer().min(1).default(7),
@@ -61,6 +59,7 @@ const envSchema = Joi.object({
   GMAIL_USER: Joi.string().email().required(),
   GMAIL_APP_PASSWORD: Joi.string().required(),
   EMAIL_TLS_REJECT_UNAUTHORIZED: Joi.boolean().default(false),
+
   // Kafka
   KAFKA_BROKERS: Joi.string().default("localhost:9092"),
 })
