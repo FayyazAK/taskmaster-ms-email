@@ -3,10 +3,10 @@ const Redis = require("ioredis");
 const config = require("./env");
 
 const redisClient = new Redis({
-  host: config.redis.host || "localhost",
-  port: config.redis.port || 6379,
-  password: config.redis.password || "",
-  db: config.redis.db || 0,
+  host: config.redis.host,
+  port: config.redis.port,
+  password: config.redis.password,
+  db: config.redis.db,
   keyPrefix: "emailService:",
   // Reconnect strategy
   retryStrategy(times) {

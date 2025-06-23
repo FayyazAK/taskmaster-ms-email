@@ -1,0 +1,57 @@
+services:
+  email-db:
+    image: mysql:8
+    container_name: taskmaster_email_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: taskmaster_email_db
+    ports:
+      - "3303:3306"
+    volumes:
+      - email-db-data:/var/lib/mysql
+    networks:
+      - backend_network
+
+  email-service:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: taskmaster_email
+    command: ["npm", "run", "start"]
+    ports:
+      - "4009:4009"
+    depends_on:
+      - email-db
+    env_file:
+      - ../.env
+    volumes:
+      - ../src:/app/src
+      - ../package.json:/app/package.json
+      - ../package-lock.json:/app/package-lock.json
+    networks:
+      - backend_network
+
+  email-worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: taskmaster_email_worker
+    command: ["npm", "run", "worker"]
+    depends_on:
+      - email-db
+    env_file:
+      - ../.env
+    volumes:
+      - ../src:/app/src
+      - ../package.json:/app/package.json
+      - ../package-lock.json:/app/package-lock.json
+    networks:
+      - backend_network
+
+volumes:
+  email-db-data:
+
+networks:
+  backend_network:
+    external: true

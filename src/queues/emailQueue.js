@@ -1,9 +1,19 @@
 const Bull = require("bull");
-const { redisConfig } = require("../config/redis");
 const logger = require("../utils/logger");
-
+const config = require("../config/env")
 const emailQueue = new Bull("email", {
-  redis: redisConfig,
+  redis: {
+    host: config.redis.host,
+    port: config.redis.port,
+    password: config.redis.password,
+    db: config.redis.db,
+    keyPrefix: "emailService",
+    // Reconnect strategy
+    retryStrategy(times) {
+      const delay = Math.min(times * 50, 2000);
+      return delay;
+    },
+  },
 });
 
 emailQueue.on("error", (err) => logger.error("Email Queue Error", err));

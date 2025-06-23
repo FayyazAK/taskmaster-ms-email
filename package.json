@@ -2,12 +2,13 @@
   "name": "email-service",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "worker": "node src/workers/emailWorker.js",
-    "dev": "nodemon index.js"
-  },
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "node index.js",
+  "worker": "node src/workers/emailWorker.js",
+  "dev": "nodemon index.js",
+  "serve": "concurrently \"npm run dev\" \"npm run worker\""
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -32,6 +33,7 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "concurrently": "^9.2.0",
     "nodemon": "^3.1.9"
   }
 }

@@ -12,11 +12,11 @@ const envSchema = Joi.object({
   // GATEWAY
   API_GATEWAY_SIGNATURE: Joi.string().default("taskmaster@gateway"),
   SYSTEM_TOKEN: Joi.string().default("taskmaster@system"),
-  GATEWAY_URL: Joi.string().uri().default("https://localhost:4000"),
+  GATEWAY_URL: Joi.string().default("https://localhost:4000"),
   SYSTEM_SIGNATURE: Joi.string().default("taskmaster@system"),
 
   // MYSQL DATABASE CONNECTION
-  DB_HOST: Joi.string().default("localhost"),
+  DB_HOST: Joi.string().required(),
   DB_USER: Joi.string().default("root"),
   DB_PASSWORD: Joi.string().default("1234"),
   AUTH_DB_NAME: Joi.string().default("taskmaster-email-db"),
@@ -37,7 +37,7 @@ const envSchema = Joi.object({
   CORS_ALLOWED_HEADERS: Joi.string().default("Content-Type,Authorization"),
 
   // REDIS CONFIGURATION
-  REDIS_HOST: Joi.string().default("localhost"),
+  REDIS_HOST: Joi.string().required(),
   REDIS_PORT: Joi.number().default(6379),
   REDIS_PASSWORD: Joi.string().allow("").default(""),
   REDIS_DB: Joi.number().default(0),
